@@ -108,7 +108,7 @@ public class FishDAO {
 		return null;
 	}
 	
-	public void add(FishDTO fdto) {		// CRUD - insert 담당의 메서드 / mapping하기 위하여 매개변수 받아옴
+	public void add(FishDTO fdto) {		// CRUD - insert 담당의 메서드 / mapping하기 위해 매개변수 받아옴
 		if(conn()) {
 			try {
 				// 쿼리 작성
