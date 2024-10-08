@@ -72,8 +72,9 @@ public class FishDAO {
 					e.printStackTrace();
 				}
 			}
+		}else {
+			System.out.println("데이터베이스 커넥션 실패");
 		}
-		
 		return null;
 	}
 	
@@ -104,8 +105,71 @@ public class FishDAO {
 					e.printStackTrace();
 				}
 			}			
+		}else {
+			System.out.println("데이터베이스 커넥션 실패");
 		}
 		return null;
+	}
+	
+	public void delete(String delId) {
+		if(conn()) {
+			try {
+				// 쿼리 작성
+				String sql = "delete from fishdata where id = ?";
+				PreparedStatement psmt = conn.prepareStatement(sql);
+				// mapping
+				psmt.setString(1, delId);
+				int resultInt = psmt.executeUpdate();
+				if(resultInt>0) {	// '트랜잭션'에 대한 처리 정의
+					conn.commit();	// 현재작업 수행 -> 영구적 저장
+					System.out.println("해당 삭제 저장완료");
+				}else {
+					conn.rollback();	// 현재 작업 취소
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}else {
+			System.out.println("데이터베이스 커넥션 실패");
+		}
+	}
+	
+	public void update(FishDTO fdto) {
+		if(conn()) {
+			try {
+				String sql = "update fishdate set pwd = ? where id = ?";
+				PreparedStatement psmt = conn.prepareStatement(sql);
+				// mapping
+				psmt.setString(1, fdto.getPwd());
+				psmt.setString(2, fdto.getId());
+				int resultInt = psmt.executeUpdate();
+				if(resultInt>0) {	// '트랜잭션'에 대한 처리 정의
+					conn.commit();	// 현재작업 수행 -> 영구적 저장
+					System.out.println("해당 수정 저장완료");
+				}else {
+					conn.rollback();	// 현재 작업 취소
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			}finally {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}else {
+			System.out.println("데이터베이스 커넥션 실패");
+		}
 	}
 	
 	public void add(FishDTO fdto) {		// CRUD - insert 담당의 메서드 / mapping하기 위해 매개변수 받아옴

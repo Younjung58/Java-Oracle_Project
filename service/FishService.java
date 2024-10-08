@@ -24,6 +24,8 @@ public class FishService {
 			
 			if(selNum==1) {
 				add();
+			}else if(selNum==2) {
+				del();
 			}else if(selNum==3) {
 				search();
 			}else if(selNum==4) {
@@ -49,7 +51,12 @@ public class FishService {
 		fishdao.add(fishdto);
 	}
 	private void del() {
-		
+		Scanner in = new Scanner(System.in);
+		System.out.println("삭제할 아이디를 입력하세요.");
+		String delId = in.nextLine();
+		// 삭제하기 위한 쿼리문 delete from fishdata where id = ?
+		// 쿼리에 ?가 존재, ?는 위에서 입력받은 값을 저장하는 delId
+		fishdao.delete(delId);
 	}
 	private void search() {
 		Scanner in = new Scanner(System.in);
@@ -69,6 +76,19 @@ public class FishService {
 		}
 	}
 	private void update() {
-		
+		// 시나리오.. 먼저, 아이디를 입력받아서 해당 정보를 가져온다.
+		Scanner in = new Scanner(System.in);
+		System.out.println("수정할 아이디를 입력하세요.");
+		String findId = in.nextLine();
+		FishDTO f = fishdao.selectOne(findId);	// 해당되는 아이디의 정보를 보여줌 -> 보여주기위한 조회 1
+		if(f!=null) {
+			System.out.println("수정할 정보는 다음과 같습니다.");
+			System.out.println(f.toString());
+		}
+		System.out.println("비밀번호를 수정하세요.");
+		String delPass = in.nextLine();
+		f.setPwd(delPass);
+		// 이제 DTO를 DAO로 넘겨서 update쿼리문을 실행시키면 된다.
+		fishdao.update(f);
 	}
 }
