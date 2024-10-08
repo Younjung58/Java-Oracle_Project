@@ -16,11 +16,21 @@ public class FishDAO {
 	private String password = "11111111";
 	private String url = "jdbc:oracle:thin:@localhost:1521:orcl";
 	private String driverName = "oracle.jdbc.driver.OracleDriver";
-	private Connection conn = null;
+	private Connection conn = null;		// 커넥션 자원 변수
+	public static FishDAO fishdao = null;		// 자기자신의 객체 주소 변수(public static)
 	
-	public FishDAO(){
+	// 싱글톤 기법을 이용하여 FishDAO객체는 자기자신만이 만들수 있도록 설계
+	private FishDAO(){		// 생성자의 접근제어자는 private로 하여 클래스 내에서만 사용 가능하도록
 		init();
 	}
+	
+	public static FishDAO getInstance() {	// 이 메소드를 통하여 클래스내에서 생성된 객체의 주소를 다른 클래스에 접근하여 사용가능하도록 함
+		if(fishdao == null) {
+			fishdao = new FishDAO();
+		}
+		return fishdao;
+	}
+	
 	private void init() {		// 드라이버 로드
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
